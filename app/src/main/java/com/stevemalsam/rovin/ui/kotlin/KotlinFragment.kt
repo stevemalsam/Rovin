@@ -27,7 +27,10 @@ class KotlinFragment : Fragment() {
 
         _binding = FragmentKotlinBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        val textView: TextView = binding.textKotlin
+        kotlinViewModel.text.observe(viewLifecycleOwner) {
+            textView.text = it
+        }
         return root
     }
 
