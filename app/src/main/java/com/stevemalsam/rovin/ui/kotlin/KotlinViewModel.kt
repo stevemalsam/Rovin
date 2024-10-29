@@ -16,9 +16,7 @@ class KotlinViewModel : ViewModel() {
 
     private fun getCuriosityPhotos(sol: Int, page: Int) {
         viewModelScope.launch {
-            _text.value = MarsApi.retrofitService.getPhotos(
-                sol, page
-            )
+            _text.value = MarsApi.retrofitService.getPhotos(sol, page).photos.count().toString()
         }
     }
 

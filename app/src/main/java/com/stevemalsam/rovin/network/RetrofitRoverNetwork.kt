@@ -1,9 +1,13 @@
 package com.stevemalsam.rovin.network
 
+import com.stevemalsam.rovin.models.JsonResponse
+import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.create
 import retrofit2.http.GET
@@ -36,14 +40,14 @@ class APIKeyInterceptor(val apiKey : String = API_KEY) : Interceptor{
 }
 
 private val retrofit = Retrofit.Builder()
-    .addConverterFactory(ScalarsConverterFactory.create())
+    .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
     .baseUrl(BASE_URL)
     .client(okHttpClient)
     .build()
 
 interface RetrofitRoverNetworkApi {
     @GET("rovers/curiosity/photos")
-    suspend fun getPhotos(@Query("sol") sol:Int, @Query("page") page: Int): String
+    suspend fun getPhotos(@Query("sol") sol:Int, @Query("page") page: Int): JsonResponse
 }
 
 object MarsApi {
