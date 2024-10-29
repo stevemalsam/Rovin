@@ -1,5 +1,6 @@
 [versions]
 agp = "8.7.1"
+coil = "3.0.0-rc02"
 kotlin = "2.0.21"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -20,6 +21,8 @@ okhttp = "4.12.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -37,7 +40,6 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 scalars-converter = {group = "com.squareup.retrofit2", name="converter-scalars", version.ref = "scalarsConverter"}
 okhttp = {group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp"}
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
-
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

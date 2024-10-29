@@ -1,11 +1,16 @@
 package com.stevemalsam.rovin.ui.kotlin
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil3.ImageDrawable
+import coil3.load
+import coil3.memory.MemoryCache
+import coil3.request.crossfade
+import coil3.request.error
+import coil3.request.placeholder
 import com.stevemalsam.rovin.databinding.PhotoCardBinding
 import com.stevemalsam.rovin.models.Photo
 
@@ -27,6 +32,18 @@ class PhotosRecyclerAdapter(var dataSet: List<Photo>) : RecyclerView.Adapter<Pho
         with(holder) {
             with(dataSet[position]) {
                 binding.photoTitle.text = "$id"
+//                binding.marsPhotoView.load(imgSrc) {
+//                    crossfade(true)
+//                }
+                binding.marsPhotoView.apply {
+                    var placeholder: MemoryCache.Key? = null
+
+                    load(imgSrc) {
+                        placeholder(ColorDrawable(Color.BLUE))
+                        error(ColorDrawable(Color.RED))
+                        listener { _, result -> placeholder = result.memoryCacheKey}
+                    }
+                }
             }
         }
     }
