@@ -17,6 +17,8 @@ class KotlinFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private val photosRecyclerAdapter: PhotosRecyclerAdapter = PhotosRecyclerAdapter(emptyList())
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,10 +29,15 @@ class KotlinFragment : Fragment() {
 
         _binding = FragmentKotlinBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val textView: TextView = binding.textKotlin
-        kotlinViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        val recyclerView = binding.recyclerView
+        recyclerView.adapter = photosRecyclerAdapter
+
+        kotlinViewModel.photos.observe(viewLifecycleOwner) {
+            photosRecyclerAdapter.dataSet = it
+            photosRecyclerAdapter.notifyDataSetChanged()
         }
+
+
         return root
     }
 

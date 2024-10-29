@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.scalars.converter)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

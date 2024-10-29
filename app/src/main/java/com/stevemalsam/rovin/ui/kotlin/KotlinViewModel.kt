@@ -4,19 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.stevemalsam.rovin.models.Photo
 import com.stevemalsam.rovin.network.MarsApi
 import kotlinx.coroutines.launch
 
 class KotlinViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    private val _photos = MutableLiveData<List<Photo>>().apply {
+        value = emptyList()
     }
-    val text: LiveData<String> = _text
+
+    val photos: LiveData<List<Photo>> = _photos
 
     private fun getCuriosityPhotos(sol: Int, page: Int) {
         viewModelScope.launch {
-            _text.value = MarsApi.retrofitService.getPhotos(sol, page).photos.count().toString()
+            _photos.value = MarsApi.retrofitService.getPhotos(sol, page).photos
         }
     }
 
