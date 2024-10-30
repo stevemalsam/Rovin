@@ -33,7 +33,7 @@ class ComposeFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 MaterialTheme {
-                    Text("Hello Compose")
+                    kotlinViewModel.photos.value?.let { ComposeScreen(it) }
                 }
             }
         }

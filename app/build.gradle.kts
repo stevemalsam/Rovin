@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.okhttp.logging)
     implementation(libs.material)
     implementation(libs.coil)
+    implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.ui.tooling.preview)
