@@ -4,9 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import com.stevemalsam.rovin.databinding.FragmentKotlinBinding
 
 class KotlinFragment : Fragment() {
@@ -24,8 +23,7 @@ class KotlinFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val kotlinViewModel =
-            ViewModelProvider(this).get(KotlinViewModel::class.java)
+        val kotlinViewModel: KotlinViewModel by activityViewModels()
 
         _binding = FragmentKotlinBinding.inflate(inflater, container, false)
         val root: View = binding.root
