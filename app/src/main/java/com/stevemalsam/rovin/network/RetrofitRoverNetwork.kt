@@ -15,7 +15,7 @@ import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
 private const val BASE_URL = "https://api.nasa.gov/mars-photos/api/v1/"
-private const val API_KEY = "DEMO_KEY"
+private const val API_KEY = "AyHYvkgDh4gCmDpuFPUj5kmc2nLHsJS5ikGGHKHe"
 
 private val okHttpClient = OkHttpClient.Builder()
     .addInterceptor(APIKeyInterceptor())
