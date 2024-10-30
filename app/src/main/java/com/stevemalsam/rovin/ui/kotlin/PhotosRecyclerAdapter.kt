@@ -32,9 +32,7 @@ class PhotosRecyclerAdapter(var dataSet: List<Photo>) : RecyclerView.Adapter<Pho
         with(holder) {
             with(dataSet[position]) {
                 binding.photoTitle.text = "$id"
-//                binding.marsPhotoView.load(imgSrc) {
-//                    crossfade(true)
-//                }
+                binding.photoEarthDate.text = earthDate.toString()
                 binding.marsPhotoView.apply {
                     var placeholder: MemoryCache.Key? = null
 
