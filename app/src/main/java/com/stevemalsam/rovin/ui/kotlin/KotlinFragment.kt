@@ -7,8 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
+import com.stevemalsam.rovin.R
 import com.stevemalsam.rovin.databinding.FragmentKotlinBinding
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.compose
+import kotlinx.coroutines.launch
 
 class KotlinFragment : Fragment() {
 
@@ -30,12 +38,55 @@ class KotlinFragment : Fragment() {
         _binding = FragmentKotlinBinding.inflate(inflater, container, false)
         val root: View = binding.root
         val recyclerView = binding.recyclerView
+        val progressBar = binding.progressBar
         recyclerView.adapter = photosRecyclerAdapter
         recyclerView.addItemDecoration(MarginItemDecoration(16))
 
-        kotlinViewModel.photos.observe(viewLifecycleOwner) {
-            photosRecyclerAdapter.dataSet = it
-            photosRecyclerAdapter.notifyDataSetChanged()
+//        kotlinViewModel.uiState.observe(viewLifecycleOwner) {
+//            when(it) {
+//                UIState.Loading -> progressBar.visibility = View.VISIBLE
+//                is UIState.Success-> {
+//                    progressBar.visibility = View.GONE
+//                    photosRecyclerAdapter.dataSet = it.photos
+//                    photosRecyclerAdapter.notifyDataSetChanged()
+//                }
+//                UIState.Error -> {
+//                    progressBar.visibility = View.GONE
+//                    Snackbar.make(root, getString(R.string.network_error), Snackbar.LENGTH_LONG)
+//                        .setAction(getString(R.string.retry_question)) {
+//                            kotlinViewModel.getCuriosityPhotos(1000, 2)
+//                        }
+//                        .show()
+//                }
+//            }
+//        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                kotlinViewModel.uiState.collect {
+                    when (it) {
+                        UIState.Loading -> progressBar.visibility = View.VISIBLE
+                        is UIState.Success -> {
+                            progressBar.visibility = View.GONE
+                            photosRecyclerAdapter.dataSet = it.photos
+                            photosRecyclerAdapter.notifyDataSetChanged()
+                        }
+
+                        UIState.Error -> {
+                            progressBar.visibility = View.GONE
+                            Snackbar.make(
+                                root,
+                                getString(R.string.network_error),
+                                Snackbar.LENGTH_LONG
+                            )
+                                .setAction(getString(R.string.retry_question)) {
+                                    kotlinViewModel.getCuriosityPhotos(1000, 2)
+                                }
+                                .show()
+                        }
+                    }
+                }
+            }
         }
 
         return root

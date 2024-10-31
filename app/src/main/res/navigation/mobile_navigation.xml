@@ -13,7 +13,7 @@
     <fragment
         android:id="@+id/navigation_compose"
         android:name="com.stevemalsam.rovin.ui.compose.ComposeFragment"
-        android:label="fragment_compose"
+        android:label="@string/title_compose"
         tools:layout="@layout/fragment_compose" />
 
 </navigation>

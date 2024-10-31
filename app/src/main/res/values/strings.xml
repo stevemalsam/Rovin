@@ -4,4 +4,8 @@
     <string name="title_compose">Compose</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="network_error">Error Retrieving Photos</string>
+    <string name="retry_question">Retry?</string>
+    <string name="sort_ascending">Sort Ascending</string>
+    <string name="sort_descending">Sort Descending</string>
 </resources>

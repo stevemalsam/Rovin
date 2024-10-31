@@ -1,5 +1,6 @@
 package com.stevemalsam.rovin.ui.compose
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,24 +11,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.runtime.getValue
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
@@ -38,6 +46,8 @@ import com.stevemalsam.rovin.network.models.Photo
 import com.stevemalsam.rovin.network.models.PhotoCamera
 import com.stevemalsam.rovin.network.models.Rover
 import com.stevemalsam.rovin.network.models.RoverCamera
+import com.stevemalsam.rovin.ui.kotlin.KotlinViewModel
+import com.stevemalsam.rovin.ui.kotlin.UIState
 import kotlinx.datetime.LocalDate
 
 val testCamera = PhotoCamera(1, "Mike", 1, "Michael")
@@ -90,11 +100,48 @@ class FakePhotoList: CollectionPreviewParameterProvider<Photo>(
 )
 
 @Composable
-fun ComposeScreen(photos: List<Photo>,
-                  modifier: Modifier = Modifier,
-                  contentPadding: PaddingValues = PaddingValues(0.dp)
+fun ComposeScreen(
+    viewModel: KotlinViewModel,
+    retryAction: () -> Unit,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
-    PhotosList(photos)
+    val uiState: UIState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    when(uiState) {
+        UIState.Loading -> IndeterminateCircularIndicator()
+        is UIState.Success -> {
+            PhotosList((uiState as UIState.Success).photos)
+        }
+        UIState.Error -> ErrorScreen(retryAction)
+    }
+}
+
+@Composable
+fun IndeterminateCircularIndicator() {
+
+    CircularProgressIndicator(
+        modifier = Modifier.width(64.dp),
+        color = MaterialTheme.colorScheme.secondary,
+        trackColor = MaterialTheme.colorScheme.surfaceVariant,
+    )
+}
+
+@Composable
+fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = ""
+        )
+        Text(text = stringResource(R.string.network_error), modifier = Modifier.padding(16.dp))
+        Button(onClick = retryAction) {
+            Text(stringResource(R.string.retry_question))
+        }
+    }
 }
 
 @Composable
@@ -138,10 +185,4 @@ fun PhotoCard(@PreviewParameter(FakePhoto::class) photo: Photo,
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun ComposeScreenPreview() {
-    ComposeScreen(listOf(fakePhoto1, fakePhoto2))
 }
