@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
-    id("kotlinx-serialization")
 }
 
 android {
@@ -42,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":network"))
     val composeBom = platform("androidx.compose:compose-bom:2024.09.03")
     implementation(composeBom)
 

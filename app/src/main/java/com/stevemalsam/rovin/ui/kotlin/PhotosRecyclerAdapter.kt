@@ -5,14 +5,12 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil3.ImageDrawable
 import coil3.load
 import coil3.memory.MemoryCache
-import coil3.request.crossfade
 import coil3.request.error
 import coil3.request.placeholder
 import com.stevemalsam.rovin.databinding.PhotoCardBinding
-import com.stevemalsam.rovin.models.Photo
+import com.stevemalsam.rovin.network.models.Photo
 
 class PhotosRecyclerAdapter(var dataSet: List<Photo>) : RecyclerView.Adapter<PhotosRecyclerAdapter.ViewHolder>() {
     class ViewHolder(val binding: PhotoCardBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -31,7 +29,7 @@ class PhotosRecyclerAdapter(var dataSet: List<Photo>) : RecyclerView.Adapter<Pho
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder) {
             with(dataSet[position]) {
-                binding.photoTitle.text = "$id"
+                binding.photoTitle.text = "${id}"
                 binding.photoEarthDate.text = earthDate.toString()
                 binding.marsPhotoView.apply {
                     var placeholder: MemoryCache.Key? = null

@@ -1,4 +1,4 @@
-package com.stevemalsam.rovin.models
+package com.stevemalsam.rovin.network.models
 
 import kotlinx.serialization.Serializable
 

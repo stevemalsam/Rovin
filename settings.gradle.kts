@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Rovin"
 include(":app")
+include(":network")

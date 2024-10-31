@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -35,19 +34,44 @@ import coil3.compose.LocalAsyncImagePreviewHandler
 import coil3.compose.SubcomposeAsyncImage
 import coil3.test.FakeImage
 import com.stevemalsam.rovin.R
-import com.stevemalsam.rovin.models.Photo
-import com.stevemalsam.rovin.models.PhotoCamera
-import com.stevemalsam.rovin.models.Rover
-import com.stevemalsam.rovin.models.RoverCamera
+import com.stevemalsam.rovin.network.models.Photo
+import com.stevemalsam.rovin.network.models.PhotoCamera
+import com.stevemalsam.rovin.network.models.Rover
+import com.stevemalsam.rovin.network.models.RoverCamera
 import kotlinx.datetime.LocalDate
 
 val testCamera = PhotoCamera(1, "Mike", 1, "Michael")
 val testRoverCamera = RoverCamera("Joe", "Joseph")
-val testRover = Rover(1, "Greg", LocalDate(2024, 1, 11), LocalDate(2024, 2, 10), "active", 1000, LocalDate(2024, 4, 15), 10, listOf(
-    testRoverCamera))
+val testRover = Rover(
+    1,
+    "Greg",
+    LocalDate(2024, 1, 11),
+    LocalDate(2024, 2, 10),
+    "active",
+    1000,
+    LocalDate(2024, 4, 15),
+    10,
+    listOf(
+        testRoverCamera
+    )
+)
 
-val fakePhoto1 = Photo(1, 1000, testCamera, "http://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000ML0044631200305217E01_DXXX.jpg", LocalDate(2024, 1, 11), testRover)
-val fakePhoto2 = Photo(2, 1000, testCamera, "http://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631190503679E04_DXXX.jpg", LocalDate(2024, 1, 12), testRover)
+val fakePhoto1 = Photo(
+    1,
+    1000,
+    testCamera,
+    "http://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000ML0044631200305217E01_DXXX.jpg",
+    LocalDate(2024, 1, 11),
+    testRover
+)
+val fakePhoto2 = Photo(
+    2,
+    1000,
+    testCamera,
+    "http://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000MR0044631190503679E04_DXXX.jpg",
+    LocalDate(2024, 1, 12),
+    testRover
+)
 
 @OptIn(ExperimentalCoilApi::class)
 val previewHandler = AsyncImagePreviewHandler {
@@ -66,7 +90,7 @@ class FakePhotoList: CollectionPreviewParameterProvider<Photo>(
 )
 
 @Composable
-fun ComposeScreen( photos: List<Photo>,
+fun ComposeScreen(photos: List<Photo>,
                   modifier: Modifier = Modifier,
                   contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -80,8 +104,8 @@ fun PhotosList(photos: List<Photo>,
                    LazyColumn(Modifier.fillMaxSize(),
                        verticalArrangement = Arrangement.spacedBy(8.dp),
                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)) {
-                       items(photos) {
-                           PhotoCard(it, Modifier.fillMaxWidth())
+                       items(items = photos) { photo: Photo ->
+                           PhotoCard(photo, Modifier.fillMaxWidth())
                        }
                    }
                }

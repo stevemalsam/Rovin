@@ -4,9 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stevemalsam.rovin.models.Photo
-import com.stevemalsam.rovin.network.MarsApi
+import com.stevemalsam.rovin.network.models.Photo
 import kotlinx.coroutines.launch
+
+sealed class UIState {
+    class Loading : UIState()
+    class Error : UIState()
+}
 
 class KotlinViewModel : ViewModel() {
 
@@ -18,7 +22,7 @@ class KotlinViewModel : ViewModel() {
 
     private fun getCuriosityPhotos(sol: Int, page: Int) {
         viewModelScope.launch {
-            _photos.value = MarsApi.retrofitService.getPhotos(sol, page).photos
+            _photos.value = com.stevemalsam.rovin.network.MarsApi.retrofitService.getPhotos(sol, page).photos
         }
     }
 
